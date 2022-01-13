@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="mediapipe_api">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/bazel-bin/mediapipe_api/mediapipe_assets.zip!/" />
+      <root url="jar://$PROJECT_DIR$/bazel-bin/mediapipe_api/mediapipe_desktop.zip!/" />
+      <root url="jar://$PROJECT_DIR$/bazel-bin/mediapipe_api/mediapipe_proto_srcs.zip!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

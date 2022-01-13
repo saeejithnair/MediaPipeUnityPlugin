@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="robot.obj.uuu">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/bazel-MediaPipeUnityPlugin/external/com_google_mediapipe/mediapipe/examples/android/src/java/com/google/mediapipe/apps/instantmotiontracking/assets/robot/robot.obj.uuu.zip!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
