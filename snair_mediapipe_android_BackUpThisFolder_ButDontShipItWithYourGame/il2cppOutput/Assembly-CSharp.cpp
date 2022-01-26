@@ -10884,11 +10884,11 @@ IL_0122:
 		Bootstrap_tB55389BF1E6B9E1A804F7A3C33853B78AA8A47C6* L_34 = V_1;
 		NullCheck(L_34);
 		Bootstrap_set_isFinished_m34C8EA813FE9DED1A3919AEBB1C748CCC9D5F227_inline(L_34, (bool)1, NULL);
-		// var sceneLoadReq = SceneManager.LoadSceneAsync(1);
+		// var sceneLoadReq = SceneManager.LoadSceneAsync(2);
 		U3CU3Ec__DisplayClass17_0_t58A7E5B90B1E148B46C42A35E7F5896AE0931334* L_35 = __this->___U3CU3E8__1_3;
 		il2cpp_codegen_runtime_class_init_inline(SceneManager_tA0EF56A88ACA4A15731AF7FDC10A869FA4C698FA_il2cpp_TypeInfo_var);
 		AsyncOperation_tD2789250E4B098DEDA92B366A577E500A92D2D3C* L_36;
-		L_36 = SceneManager_LoadSceneAsync_mEF6FF8837670DA6D73FA35887D8723F51024CA09(1, NULL);
+		L_36 = SceneManager_LoadSceneAsync_mEF6FF8837670DA6D73FA35887D8723F51024CA09(2, NULL);
 		NullCheck(L_35);
 		L_35->___sceneLoadReq_0 = L_36;
 		Il2CppCodeGenWriteBarrier((void**)(&L_35->___sceneLoadReq_0), (void*)L_36);

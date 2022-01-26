@@ -142,7 +142,7 @@ namespace Mediapipe.Unity.FaceMesh
           // When running synchronously, wait for the outputs here (blocks the main thread).
           var value = _graphRunner.FetchNextValue();
           _faceDetectionsAnnotationController.DrawNow(value.faceDetections);
-          _faceRectsFromLandmarksAnnotationController.DrawNow(value.faceRectsFromLandmarks);
+          // _faceRectsFromLandmarksAnnotationController.DrawNow(value.faceRectsFromLandmarks);
           _multiFaceLandmarksAnnotationController.DrawNow(value.multiFaceLandmarks);
         }
 
