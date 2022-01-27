@@ -99,6 +99,8 @@ namespace Mediapipe.Unity.FaceMesh
         yield break;
       }
 
+      runningMode = RunningMode.Sync;
+
       if (runningMode == RunningMode.Async)
       {
         _graphRunner.OnFaceDetectionsOutput.AddListener(OnFaceDetectionsOutput);
@@ -142,6 +144,19 @@ namespace Mediapipe.Unity.FaceMesh
           // When running synchronously, wait for the outputs here (blocks the main thread).
           var value = _graphRunner.FetchNextValue();
           _faceDetectionsAnnotationController.DrawNow(value.faceDetections);
+
+          if (value.multiFaceLandmarks != null) {
+            // Logger.LogInfo(TAG, "multiFaceLandmarks is not null");
+            var numFaces = value.multiFaceLandmarks.Count;
+            Logger.LogInfo(TAG, $"Num Faces detected = {numFaces}");
+
+            if (numFaces > 0) {
+              var faceLandmarks = value.multiFaceLandmarks[0];
+              Debug.Log(faceLandmarks?.Landmark.Count);
+              // var numLandmarks = faceLandmarks.Count;
+              // Logger.LogInfo(TAG, $"Num landmarks detected = {numLandmarks}");
+            }
+          }
           // _faceRectsFromLandmarksAnnotationController.DrawNow(value.faceRectsFromLandmarks);
           _multiFaceLandmarksAnnotationController.DrawNow(value.multiFaceLandmarks);
         }
