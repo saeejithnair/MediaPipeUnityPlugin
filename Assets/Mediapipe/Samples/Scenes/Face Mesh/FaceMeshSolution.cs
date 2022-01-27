@@ -87,6 +87,8 @@ namespace Mediapipe.Unity.FaceMesh
       // NOTE: The _screen will be resized later, keeping the aspect ratio.
       _screen.Initialize(imageSource);
 
+      runningMode = RunningMode.Sync;
+
       Logger.LogInfo(TAG, $"Max Num Faces = {maxNumFaces}");
       Logger.LogInfo(TAG, $"Refine Landmarks = {refineLandmarks}");
       Logger.LogInfo(TAG, $"Running Mode = {runningMode}");
@@ -101,6 +103,7 @@ namespace Mediapipe.Unity.FaceMesh
 
       if (runningMode == RunningMode.Async)
       {
+        // This demo currently runs in async mode.
         _graphRunner.OnFaceDetectionsOutput.AddListener(OnFaceDetectionsOutput);
         _graphRunner.OnMultiFaceLandmarksOutput.AddListener(OnMultiFaceLandmarksOutput);
         _graphRunner.OnFaceRectsFromLandmarksOutput.AddListener(OnFaceRectsFromLandmarksOutput);
@@ -141,9 +144,14 @@ namespace Mediapipe.Unity.FaceMesh
 
           // When running synchronously, wait for the outputs here (blocks the main thread).
           var value = _graphRunner.FetchNextValue();
+
+          var numFaces = value.multiFaceLandmarks.Count;
+          Logger.LogInfo(TAG, $"In UpdateDatagram, numFaces={numFaces}");
+
           _faceDetectionsAnnotationController.DrawNow(value.faceDetections);
           // _faceRectsFromLandmarksAnnotationController.DrawNow(value.faceRectsFromLandmarks);
           _multiFaceLandmarksAnnotationController.DrawNow(value.multiFaceLandmarks);
+          // UpdateDatagram(value.multiFaceLandmarks);
         }
 
         yield return new WaitForEndOfFrame();

@@ -5,6 +5,7 @@
 // https://opensource.org/licenses/MIT.
 
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Mediapipe.Unity
@@ -18,6 +19,10 @@ namespace Mediapipe.Unity
 
     protected Bootstrap bootstrap;
     protected bool isPaused;
+    protected DD_DataDiagram dataDiagram;
+    // Variables for plotting line graph.
+    List<GameObject> lineList = new List<GameObject>();
+    private float h = 0;
 
     protected virtual IEnumerator Start()
     {
@@ -30,6 +35,16 @@ namespace Mediapipe.Unity
       }
 
       bootstrap = bootstrapObj.GetComponent<Bootstrap>();
+
+      var dataDiagramObj = GameObject.Find("DataDiagram");
+      if(null == dataDiagramObj) {
+          Logger.LogError(TAG, "Cannot find a GameObject of DataDiagram");
+          yield break;
+      }
+      dataDiagram = dataDiagramObj.GetComponent<DD_DataDiagram>();
+      dataDiagram.PreDestroyLineEvent += (s, e) => { lineList.Remove(e.line); };
+      AddALine();
+
       yield return new WaitUntil(() => bootstrap.isFinished);
 
       Play();
@@ -67,6 +82,31 @@ namespace Mediapipe.Unity
     {
       isPaused = true;
     }
+
+    protected void AddALine() {
+      if (null == dataDiagram)
+          return;
+
+      Color color = Color.HSVToRGB((h += 0.1f) > 1 ? (h - 1) : h, 0.8f, 0.8f);
+      GameObject line = dataDiagram.AddLine(color.ToString(), color);
+      if (null != line)
+          lineList.Add(line);
+    }
+
+    public void OnRectChange() {
+      if (null == dataDiagram)
+          return;
+
+      UnityEngine.Rect rect = new UnityEngine.Rect(Random.value * UnityEngine.Screen.width, Random.value * UnityEngine.Screen.height,
+          Random.value * UnityEngine.Screen.width / 2, Random.value * UnityEngine.Screen.height / 2);
+
+      dataDiagram.rect = rect;
+    }
+
+    // protected void UpdateDatagram(IList<NormalizedLandmarkList> target) {
+    //   // var numFaces = target.Count;
+    //   // Logger.LogInfo(TAG, $"In UpdateDatagram, numFaces={numFaces}");
+    // }
 
     protected static void SetupAnnotationController<T>(AnnotationController<T> annotationController, ImageSource imageSource, bool expectedToBeMirrored = false) where T : HierarchicalAnnotation
     {
