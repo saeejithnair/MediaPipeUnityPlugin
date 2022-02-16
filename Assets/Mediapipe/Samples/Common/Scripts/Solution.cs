@@ -103,10 +103,9 @@ namespace Mediapipe.Unity
       dataDiagram.rect = rect;
     }
 
-    // protected void UpdateDatagram(IList<NormalizedLandmarkList> target) {
-    //   // var numFaces = target.Count;
-    //   // Logger.LogInfo(TAG, $"In UpdateDatagram, numFaces={numFaces}");
-    // }
+    protected void UpdateDatagram(float new_intensity_value) {
+      // Update datagram graph with new intensity value.    
+    }
 
     protected static void SetupAnnotationController<T>(AnnotationController<T> annotationController, ImageSource imageSource, bool expectedToBeMirrored = false) where T : HierarchicalAnnotation
     {

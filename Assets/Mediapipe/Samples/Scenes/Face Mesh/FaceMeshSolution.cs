@@ -24,6 +24,12 @@ namespace Mediapipe.Unity.FaceMesh
 
     public RunningMode runningMode;
 
+    // private List<int> TRACKERS_FOREHEAD = {104, 69, 108, 151, 337, 299, 333};
+    // private List<int>  TRACKERS_RCHEEK = {255, 261, 340, 352, 411, 427, 436};
+    // private List<int>  TRACKERS_LCHEEK = {25, 31, 111, 123, 187, 207, 216};
+    // private int FACE_LANDMARK_EXTREME_LEFT = 234;
+    // private int FACE_LANDMARK_EXTREME_RIGHT = 454;
+
     public int maxNumFaces
     {
       get => _graphRunner.maxNumFaces;
@@ -145,17 +151,44 @@ namespace Mediapipe.Unity.FaceMesh
           // When running synchronously, wait for the outputs here (blocks the main thread).
           var value = _graphRunner.FetchNextValue();
 
-          var numFaces = value.multiFaceLandmarks.Count;
-          Logger.LogInfo(TAG, $"In UpdateDatagram, numFaces={numFaces}");
-
           _faceDetectionsAnnotationController.DrawNow(value.faceDetections);
           // _faceRectsFromLandmarksAnnotationController.DrawNow(value.faceRectsFromLandmarks);
           _multiFaceLandmarksAnnotationController.DrawNow(value.multiFaceLandmarks);
-          // UpdateDatagram(value.multiFaceLandmarks);
+          // CalculateIntensities(value.multiFaceLandmarks)
         }
 
         yield return new WaitForEndOfFrame();
       }
+    }
+
+    private void CalculateIntensities(IList<NormalizedLandmarkList> multiFaceLandmarks, TextureFrame textureFrame) {
+      // Get face landmarks
+      if (null == multiFaceLandmarks) {
+        return;
+      }
+
+      var numFaces = multiFaceLandmarks.Count;
+      if (numFaces <= 0) {
+        return;
+      }
+
+      var faceLandmarks = multiFaceLandmarks[0];
+      if (faceLandmarks?.Landmark.Count <= 0) {
+        Logger.LogInfo(TAG, $"Invalid number of landmarks ({faceLandmarks?.Landmark.Count}) detected.");
+      }
+
+      // Extract key facial regions from face landmarks (left/right cheek, forehead)
+
+      // Run a 2D convex hull algorithm over landmark keypoints to obtain a tighter region
+
+      // Extract pixel coordinates within each contour and add to list.
+
+      // Get intensities for each pixel in pixels list. Compute running sum.
+
+      // Divide by total number of pixels to get average intensity.
+
+      // Publish latest average intensity value.
+      // UpdateDatagram(new_intensity_value)
     }
 
     private void OnFaceDetectionsOutput(List<Detection> faceDetections)
